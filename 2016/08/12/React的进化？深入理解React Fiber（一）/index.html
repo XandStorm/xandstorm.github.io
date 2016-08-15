@@ -1,0 +1,535 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="前端,React," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="最近知乎上大家在讨论 React Fiber（如何理解React Fiber架构），刚好最近有在看React的实现方式的文章，这里可以讨论一下 React Fiber 究竟比 React 进化了什么，以及它的实现思路和未来，本文大量参考了 React 团队的文档、Github Issues、PR时候的讨论等。
+Fiber 能解决 React 渲染大块内容时候的卡顿React Fiber 是 Rea">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React的进化？深入理解React Fiber（一）">
+<meta property="og:url" content="http://http://xandstorm.github.io/2016/08/12/React的进化？深入理解React Fiber（一）/index.html">
+<meta property="og:site_name" content="XandStorm的博客">
+<meta property="og:description" content="最近知乎上大家在讨论 React Fiber（如何理解React Fiber架构），刚好最近有在看React的实现方式的文章，这里可以讨论一下 React Fiber 究竟比 React 进化了什么，以及它的实现思路和未来，本文大量参考了 React 团队的文档、Github Issues、PR时候的讨论等。
+Fiber 能解决 React 渲染大块内容时候的卡顿React Fiber 是 Rea">
+<meta property="og:image" content="http://http://xandstorm.github.io/2016/08/12/React的进化？深入理解React%20Fiber（一）/Core.jpg">
+<meta property="og:updated_time" content="2016-08-15T08:08:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="React的进化？深入理解React Fiber（一）">
+<meta name="twitter:description" content="最近知乎上大家在讨论 React Fiber（如何理解React Fiber架构），刚好最近有在看React的实现方式的文章，这里可以讨论一下 React Fiber 究竟比 React 进化了什么，以及它的实现思路和未来，本文大量参考了 React 团队的文档、Github Issues、PR时候的讨论等。
+Fiber 能解决 React 渲染大块内容时候的卡顿React Fiber 是 Rea">
+<meta name="twitter:image" content="http://http://xandstorm.github.io/2016/08/12/React的进化？深入理解React%20Fiber（一）/Core.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> React的进化？深入理解React Fiber（一） | XandStorm的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">XandStorm的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Keep learning.</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                React的进化？深入理解React Fiber（一）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-12T12:27:00+08:00" content="2016-08-12">
+              2016-08-12
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近知乎上大家在讨论 React Fiber（<a href="https://www.zhihu.com/question/49496872" target="_blank" rel="external">如何理解React Fiber架构</a>），刚好最近有在看React的实现方式的文章，这里可以讨论一下 React Fiber 究竟比 React 进化了什么，以及它的实现思路和未来，本文大量参考了 React 团队的文档、Github Issues、PR时候的讨论等。</p>
+<h3 id="Fiber-能解决-React-渲染大块内容时候的卡顿"><a href="#Fiber-能解决-React-渲染大块内容时候的卡顿" class="headerlink" title="Fiber 能解决 React 渲染大块内容时候的卡顿"></a>Fiber 能解决 React 渲染大块内容时候的卡顿</h3><p><a href="https://github.com/acdlite/react-fiber-architecture" target="_blank" rel="external">React Fiber</a> 是 React 团队正在着手重写的 React 核心算法（Core algorithm），重写后的核心 Feature 是增量渲染（Incremental rendering），能够优先渲染重要内容，次要部分随后再增量更新。Fiber 通过把需要很长时间渲染的内容分解成小块，分散到每一帧的间隔去处理，提升 React 对需要快速反映的动画、用户操作的响应速度。</p>
+<h3 id="React-的核心机制"><a href="#React-的核心机制" class="headerlink" title="React 的核心机制"></a>React 的核心机制</h3><p>要想了解 Fiber 是什么，首先我们得了解 React 是怎么运作的。React 的核心概念是 <strong>虚拟 DOM</strong>，它会在组件挂载的时候，在内存里维持一个虚拟的组件树，然后将组建树渲染成 DOM 节点。每当有更新过来的时候（更新一般来自于调用setState方法，或者是父组件传递下的props变更），React 能够对比前后两个树结构的不同，得出更新所需要的操作，再由 ReactDOM 翻译成 DOM 操作，能够高效率地更改页面的元素。这些过程里最核心的，就是 <a href="https://facebook.github.io/react/docs/reconciliation.html" target="_blank" rel="external"><strong>Reconciliation</strong></a> 算法，它能够 Diff 两棵组件树，并且决定哪些部分需要在这次更新中被调整。Reconciliation 的意思是校正／校准，它的功能可谓是虚拟 DOM 的灵魂，由 Reconciliation 算法计算出来的组件树差异，能被翻译成 DOM 操作、也可以是在 Native 里面的界面元素操作。</p>
+<img src="/2016/08/12/React的进化？深入理解React%20Fiber（一）/Core.jpg" alt="核心机理" title="核心机理">
+<p>更多的关于 Reconciliation 算法的细节，可以去看一下官方文档，看看 React 是如何巧妙地把一个O(n^3)的问题通过一些小小的性能牺牲，转化为了一个O(n)的问题。还有这一篇知乎专栏（<a href="https://zhuanlan.zhihu.com/p/20346379" target="_blank" rel="external">不可思议的 react diff</a>）也挺不错。</p>
+<h3 id="如果-React-能对渲染进行优先级排序"><a href="#如果-React-能对渲染进行优先级排序" class="headerlink" title="如果 React 能对渲染进行优先级排序"></a>如果 React 能对渲染进行优先级排序</h3><p>尽管 Reconciliation 能够显著地提高更新 DOM 的性能，但是当我们遭遇大量内容渲染时，比如刷新了一个巨大的表格之类的，Diffing 加上渲染的时间依然会非常巨大，这时候页面就不可避免地出现掉帧、卡顿的现象。这时候就需要对将要执行的更新进行优先级的排序，才可以保证动画、动作监听之类的都优先在每一帧之内处理完；对于不那么重要的更新，比如后续的Feeds、弹窗之类的，就可以等到剩余有空的时间再去处理。</p>
+<p>其实现代浏览器里面已经有了这种任务优先级API的雏形，比如 <code>requestIdleCallback</code>可以用来做将任务细分分配到每帧空余时间处理的解决方案，而更早之前的<code>requestAnimationFrame</code>则能够让动画函数随浏览器刷新频率同步的间隔被调用。</p>
+<p>在 React 里面，开发团队很早就有了这样的设想。在 React 的<a href="https://facebook.github.io/react/contributing/design-principles.html#scheduling" target="_blank" rel="external">设计原则</a>文档里面，就有这么一段话，大意就是：<del>我们也有这个美好的想法，但是有点拖延症（误）</del><br><blockquote class="blockquote-center"><p>This is a subtle distinction but a powerful one. Since you don’t call that component function but let React call it, it means React has the power to delay calling it if necessary. In its current implementation React walks the tree recursively and calls render functions of the whole updated tree during a single tick. However in the future it might start delaying some updates to avoid dropping frames.</p>
+</blockquote></p>
+<h3 id="Fiber-能做到什么"><a href="#Fiber-能做到什么" class="headerlink" title="Fiber 能做到什么"></a>Fiber 能做到什么</h3><p>一般来说，想要管理任务的优先级，可以从 Push 和 Pull 两个方向思考。Push 的思路就是由程序员来决定优先级，想要执行什么任务，就马上把任务推送过去，并且告诉进程这个任务的优先级，如果优先级高于现有进程，就马上给我弄这个，反之就等等吧。Pull 的思路则是程序员只需要负责提供任务，至于执行的顺序，框架能够自行帮你智能地解决。</p>
+<p>现版本的 React 并没有过多地接管任务管理的部分，虽然setState是异步的方法，但遇到更新时候，也只会一次性地更新所有的子树，这么”蠢”的框架还不给 Push 任务怎么忍得了，彻底地重写整个任务机制势在必行啦，这也是为什么要有 Fiber 这货。</p>
+<p>Fiber 接管了 React 组件的调用栈，优化了组件的渲染。每一个 Fiber 的实例，都可以被看作一个虚拟的调用栈帧。虚拟栈帧被保存在内存里，你可以之后再去启用他。因此，你可以随时把现有的任务暂停，之后再去处理，还能够为任务安排不同的优先级，又或者是抛弃因为新的更新而不再需要的任务。换句话说，原本只会被 Reconciler 一次性过完并且交付渲染的任务，现在可以拆分成单个 Fiber 控制的部分，分别执行，其余的可以挂起等到合适的时候再去处理。</p>
+<h3 id="Fiber-还需要继续讨论的问题"><a href="#Fiber-还需要继续讨论的问题" class="headerlink" title="Fiber 还需要继续讨论的问题"></a>Fiber 还需要继续讨论的问题</h3><p>截止发稿的8月15日，React Fiber 的部分代码已经发布到了 React 的 Repo 里面了，开发人员表示前期的测试会拆分出 ReactDOM 和 ReactDOMFiber 两个独立的部分。<a href="https://github.com/acdlite" target="_blank" rel="external">Andrew Clark</a> 也还在不断更新关于 Fiber 的资料。目前 Fiber 的具体细节也还没有太多的资料，如果以后有时间，还可以继续探讨这些一颗赛艇的话题，比如</p>
+<ul>
+<li>Fiber 的任务分解、优先级排序之类的是怎么实现的</li>
+<li>Fiber 如何投入实际应用</li>
+<li>怎么样去判断一个工作应该挂起还是执行</li>
+<li>等等</li>
+</ul>
+<p>题外话：（好久没有写博客了，现在终于把手头上的事情忙完了，有空可以继续我的博客大业了。前两周真的是梦一般的感觉😂我司居然嗖的一下就被卖了，我的项目也被停掉了，所以从半年来的忙得要死变成了收完收尾就没事可干…)</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/前端/" rel="tag">#前端</a>
+          
+            <a href="/tags/React/" rel="tag">#React</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/09/作品集（1）欢乐的校园作品/" rel="next" title="作品集（1）欢乐的校园作品">
+                <i class="fa fa-chevron-left"></i> 作品集（1）欢乐的校园作品
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="XandStorm" />
+          <p class="site-author-name" itemprop="name">XandStorm</p>
+          <p class="site-description motion-element" itemprop="description">产品|设计|技术</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        <div class="links-of-blogroll motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Fiber-能解决-React-渲染大块内容时候的卡顿"><span class="nav-number">1.</span> <span class="nav-text">Fiber 能解决 React 渲染大块内容时候的卡顿</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#React-的核心机制"><span class="nav-number">2.</span> <span class="nav-text">React 的核心机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如果-React-能对渲染进行优先级排序"><span class="nav-number">3.</span> <span class="nav-text">如果 React 能对渲染进行优先级排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fiber-能做到什么"><span class="nav-number">4.</span> <span class="nav-text">Fiber 能做到什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fiber-还需要继续讨论的问题"><span class="nav-number">5.</span> <span class="nav-text">Fiber 还需要继续讨论的问题</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">XandStorm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=0.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>
