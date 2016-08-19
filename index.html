@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Product, Xandstorm" />
 
 
 
@@ -176,6 +176,16 @@
           </a>
         </li>
       
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
 
       
     </ul>
@@ -251,6 +261,15 @@
 
           
           
+             <span id="/2016/08/18/增加了新功能/" class="leancloud_visitors" data-flag-title="增加了新功能">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
 
         </div>
       </header>
@@ -265,17 +284,23 @@
       
         
           
-            <h3 id="新增功能"><a href="#新增功能" class="headerlink" title="新增功能"></a>新增功能</h3><p>捣鼓了一下评论系统，现在应该可以提交评论了（Powered by 多说）<br>增加了一些统计字段</p>
-<h3 id="未来几天的文章设想"><a href="#未来几天的文章设想" class="headerlink" title="未来几天的文章设想"></a>未来几天的文章设想</h3><p>有可能会写一些过去一年的工作经验、产品分析、学习心得之类的，设想中的选题有</p>
-<ul>
-<li>伸手党如何进化出强大的学习能力？</li>
-<li>产品和客服如何沟通解决问题</li>
-<li>Sketch 的一些小技巧</li>
-<li>一些产品的简要分析</li>
-<li>打车行业的一些细节</li>
-</ul>
+          新增功能捣鼓了一下评论系统，现在应该可以提交评论了（Powered by 多说）增加了一些统计字段
+未来几天的文章设想有可能会写一些过去一年的工作经验、产品分析、学习心得之类的，设想中的选题有
+
+伸手党如何进化出强大的学习能力？
+产品和客服如何沟通解决问题
+Sketch 的一些小技巧
+一些产品的简要分析
+打车行业的一些细节
+
 
           
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/08/18/增加了新功能/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -355,6 +380,15 @@
 
           
           
+             <span id="/2016/08/12/React的进化？深入理解React Fiber（一）/" class="leancloud_visitors" data-flag-title="React的进化？深入理解React Fiber（一）">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
 
         </div>
       </header>
@@ -369,28 +403,15 @@
       
         
           
-            <p>最近知乎上大家在讨论 React Fiber（<a href="https://www.zhihu.com/question/49496872" target="_blank" rel="external">如何理解React Fiber架构</a>），刚好最近有在看React的实现方式的文章，这里可以讨论一下 React Fiber 究竟比 React 进化了什么，以及它的实现思路和未来，本文大量参考了 React 团队的文档、Github Issues、PR时候的讨论等。</p>
-<h3 id="Fiber-能解决-React-渲染大块内容时候的卡顿"><a href="#Fiber-能解决-React-渲染大块内容时候的卡顿" class="headerlink" title="Fiber 能解决 React 渲染大块内容时候的卡顿"></a>Fiber 能解决 React 渲染大块内容时候的卡顿</h3><p><a href="https://github.com/acdlite/react-fiber-architecture" target="_blank" rel="external">React Fiber</a> 是 React 团队正在着手重写的 React 核心算法（Core algorithm），重写后的核心 Feature 是增量渲染（Incremental rendering），能够优先渲染重要内容，次要部分随后再增量更新。Fiber 通过把需要很长时间渲染的内容分解成小块，分散到每一帧的间隔去处理，提升 React 对需要快速反映的动画、用户操作的响应速度。</p>
-<h3 id="React-的核心机制"><a href="#React-的核心机制" class="headerlink" title="React 的核心机制"></a>React 的核心机制</h3><p>要想了解 Fiber 是什么，首先我们得了解 React 是怎么运作的。React 的核心概念是 <strong>虚拟 DOM</strong>，它会在组件挂载的时候，在内存里维持一个虚拟的组件树，然后将组建树渲染成 DOM 节点。每当有更新过来的时候（更新一般来自于调用setState方法，或者是父组件传递下的props变更），React 能够对比前后两个树结构的不同，得出更新所需要的操作，再由 ReactDOM 翻译成 DOM 操作，能够高效率地更改页面的元素。这些过程里最核心的，就是 <a href="https://facebook.github.io/react/docs/reconciliation.html" target="_blank" rel="external"><strong>Reconciliation</strong></a> 算法，它能够 Diff 两棵组件树，并且决定哪些部分需要在这次更新中被调整。Reconciliation 的意思是校正／校准，它的功能可谓是虚拟 DOM 的灵魂，由 Reconciliation 算法计算出来的组件树差异，能被翻译成 DOM 操作、也可以是在 Native 里面的界面元素操作。</p>
-<img src="/2016/08/12/React的进化？深入理解React%20Fiber（一）/Core.jpg" alt="核心机理" title="核心机理">
-<p>更多的关于 Reconciliation 算法的细节，可以去看一下官方文档，看看 React 是如何巧妙地把一个O(n^3)的问题通过一些小小的性能牺牲，转化为了一个O(n)的问题。还有这一篇知乎专栏（<a href="https://zhuanlan.zhihu.com/p/20346379" target="_blank" rel="external">不可思议的 react diff</a>）也挺不错。</p>
-<h3 id="如果-React-能对渲染进行优先级排序"><a href="#如果-React-能对渲染进行优先级排序" class="headerlink" title="如果 React 能对渲染进行优先级排序"></a>如果 React 能对渲染进行优先级排序</h3><p>尽管 Reconciliation 能够显著地提高更新 DOM 的性能，但是当我们遭遇大量内容渲染时，比如刷新了一个巨大的表格之类的，Diffing 加上渲染的时间依然会非常巨大，这时候页面就不可避免地出现掉帧、卡顿的现象。这时候就需要对将要执行的更新进行优先级的排序，才可以保证动画、动作监听之类的都优先在每一帧之内处理完；对于不那么重要的更新，比如后续的Feeds、弹窗之类的，就可以等到剩余有空的时间再去处理。</p>
-<p>其实现代浏览器里面已经有了这种任务优先级API的雏形，比如 <code>requestIdleCallback</code>可以用来做将任务细分分配到每帧空余时间处理的解决方案，而更早之前的<code>requestAnimationFrame</code>则能够让动画函数随浏览器刷新频率同步的间隔被调用。</p>
-<p>在 React 里面，开发团队很早就有了这样的设想。在 React 的<a href="https://facebook.github.io/react/contributing/design-principles.html#scheduling" target="_blank" rel="external">设计原则</a>文档里面，就有这么一段话，大意就是：<del>我们也有这个美好的想法，但是有点拖延症（误）</del><br><blockquote class="blockquote-center"><p>This is a subtle distinction but a powerful one. Since you don’t call that component function but let React call it, it means React has the power to delay calling it if necessary. In its current implementation React walks the tree recursively and calls render functions of the whole updated tree during a single tick. However in the future it might start delaying some updates to avoid dropping frames.</p>
-</blockquote></p>
-<h3 id="Fiber-能做到什么"><a href="#Fiber-能做到什么" class="headerlink" title="Fiber 能做到什么"></a>Fiber 能做到什么</h3><p>一般来说，想要管理任务的优先级，可以从 Push 和 Pull 两个方向思考。Push 的思路就是由程序员来决定优先级，想要执行什么任务，就马上把任务推送过去，并且告诉进程这个任务的优先级，如果优先级高于现有进程，就马上给我弄这个，反之就等等吧。Pull 的思路则是程序员只需要负责提供任务，至于执行的顺序，框架能够自行帮你智能地解决。</p>
-<p>现版本的 React 并没有过多地接管任务管理的部分，虽然setState是异步的方法，但遇到更新时候，也只会一次性地更新所有的子树，这么”蠢”的框架还不给 Push 任务怎么忍得了，彻底地重写整个任务机制势在必行啦，这也是为什么要有 Fiber 这货。</p>
-<p>Fiber 接管了 React 组件的调用栈，优化了组件的渲染。每一个 Fiber 的实例，都可以被看作一个虚拟的调用栈帧。虚拟栈帧被保存在内存里，你可以之后再去启用他。因此，你可以随时把现有的任务暂停，之后再去处理，还能够为任务安排不同的优先级，又或者是抛弃因为新的更新而不再需要的任务。换句话说，原本只会被 Reconciler 一次性过完并且交付渲染的任务，现在可以拆分成单个 Fiber 控制的部分，分别执行，其余的可以挂起等到合适的时候再去处理。</p>
-<h3 id="Fiber-还需要继续讨论的问题"><a href="#Fiber-还需要继续讨论的问题" class="headerlink" title="Fiber 还需要继续讨论的问题"></a>Fiber 还需要继续讨论的问题</h3><p>截止发稿的8月15日，React Fiber 的部分代码已经发布到了 React 的 Repo 里面了，开发人员表示前期的测试会拆分出 ReactDOM 和 ReactDOMFiber 两个独立的部分。<a href="https://github.com/acdlite" target="_blank" rel="external">Andrew Clark</a> 也还在不断更新关于 Fiber 的资料。目前 Fiber 的具体细节也还没有太多的资料，如果以后有时间，还可以继续探讨这些一颗赛艇的话题，比如</p>
-<ul>
-<li>Fiber 的任务分解、优先级排序之类的是怎么实现的</li>
-<li>Fiber 如何投入实际应用</li>
-<li>怎么样去判断一个工作应该挂起还是执行</li>
-<li>等等</li>
-</ul>
-<p>题外话：（好久没有写博客了，现在终于把手头上的事情忙完了，有空可以继续我的博客大业了。前两周真的是梦一般的感觉😂我司居然嗖的一下就被卖了，我的项目也被停掉了，所以从半年来的忙得要死变成了收完收尾就没事可干…)</p>
+          最近知乎上大家在讨论 React Fiber（如何理解React Fiber架构），刚好最近有在看React的实现方式的文章，这里可以讨论一下 React Fiber 究竟比 React 进化了什么，以及它的实现思路和未来，本文大量参考了 React 团队的文档、Github Issues、PR时候的讨论等。
+Fiber 能解决 React 渲染大块内容时候的卡顿React Fiber 是 Rea
+          ...
 
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/08/12/React的进化？深入理解React Fiber（一）/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -470,6 +491,15 @@
 
           
           
+             <span id="/2016/05/09/作品集（1）欢乐的校园作品/" class="leancloud_visitors" data-flag-title="作品集（1）欢乐的校园作品">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
 
         </div>
       </header>
@@ -484,37 +514,43 @@
       
         
           
-            <blockquote class="blockquote-center"><p>跟着录取通知书寄出去的<br>大二时候的作品<br>不到开学就斩获了3000个粉丝！</p>
-</blockquote>
-<img src="/2016/05/09/%E4%BD%9C%E5%93%81%E9%9B%86%EF%BC%881%EF%BC%89%E6%AC%A2%E4%B9%90%E7%9A%84%E6%A0%A1%E5%9B%AD%E4%BD%9C%E5%93%81/small.jpg " class="full-image" alt="工作室传单" title="工作室传单－2015夏">
-<p><br><br><br></p>
-<blockquote class="blockquote-center"><p>几千个小伙伴带着几万个这个册子<br>回到了上百所学校<br>连续两年，影响了百万高中生</p>
-</blockquote>
-<img src="/2016/05/09/作品集（1）欢乐的校园作品/front.jpg" alt="暨大宣传册正面效果－2014年秋" title="暨大宣传册正面效果－2014年秋">
-<p><br></p>
-<blockquote class="blockquote-center"><p>招新第一发</p>
-</blockquote>
-<img src="/2016/05/09/作品集（1）欢乐的校园作品/01.jpg" alt="招新四折传单第一面" title="招新四折传单第一面">
-<p><br></p>
-<blockquote class="blockquote-center"><p>招新第二发</p>
-</blockquote>
-<img src="/2016/05/09/作品集（1）欢乐的校园作品/02.jpg" alt="招新四折传单第二面" title="招新四折传单第二面">
-<p><br></p>
-<blockquote class="blockquote-center"><p>招新第三发</p>
-</blockquote>
-<img src="/2016/05/09/作品集（1）欢乐的校园作品/03.jpg" alt="招新四折传单第三面" title="招新四折传单第三面">
-<p><br></p>
-<blockquote class="blockquote-center"><p>微信招新<br>这文案，写的人也是萌萌哒</p>
-</blockquote>
-<img src="/2016/05/09/作品集（1）欢乐的校园作品/wechat.jpg" alt="微信配图啦！" title="微信配图啦！">
-<p><br></p>
-<blockquote class="blockquote-center"><p>神说：要来个局部高清大图<br>现在看回来<br>好幼稚</p>
-</blockquote>
-<img src="/2016/05/09/%E4%BD%9C%E5%93%81%E9%9B%86%EF%BC%881%EF%BC%89%E6%AC%A2%E4%B9%90%E7%9A%84%E6%A0%A1%E5%9B%AD%E4%BD%9C%E5%93%81/color.jpg " class="full-image" alt="工作室招新" title="招新头图－2015秋">
-<blockquote class="blockquote-center"><p>等有空了，再更新一些工作的！！！</p>
-</blockquote>
+          跟着录取通知书寄出去的大二时候的作品不到开学就斩获了3000个粉丝！
+
+
+
+几千个小伙伴带着几万个这个册子回到了上百所学校连续两年，影响了百万高中生
+
+
+
+招新第一发
+
+
+
+招新第二发
+
+
+
+招新第三发
+
+
+
+微信招新这文案，写的人也是萌萌哒
+
+
+
+神说：要来个局部高清大图现在看回来好幼稚
+
+
+等有空了，再更新一些工作的！！！
+
 
           
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/09/作品集（1）欢乐的校园作品/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -594,6 +630,15 @@
 
           
           
+             <span id="/2016/05/06/sketch-想要快速做一大堆的图？新功能可以成批解决/" class="leancloud_visitors" data-flag-title="sketch 想要快速做一大堆的图？新功能可以成批解决">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
 
         </div>
       </header>
@@ -608,31 +653,18 @@
       
         
           
-            <p>工作中有很多图片都是一个模版，套上不同内容、图片来生成不一样的快速生成一个系列的海报、传单、线上图片等。通常做一个大型一点的活动，需要改十几到几十张这一类的图片，整个人都崩溃了有木有。</p>
-<h3 id=""><a href="#" class="headerlink" title=""></a><blockquote class="blockquote-center"><p>以前蠢蠢的方法们 </p>
-</blockquote></h3><p>刚开始，用ai来处理一批物料的时候，这个人带着电脑可怜的内存以及一卡一卡的鼠标，直接就崩溃了。多个AI还会导致占用空间超级多，有试过100多m的AI弄了30多个，整个电脑都不好了。</p>
- <img src="/2016/05/06/sketch-%E6%83%B3%E8%A6%81%E5%BF%AB%E9%80%9F%E5%81%9A%E4%B8%80%E5%A4%A7%E5%A0%86%E7%9A%84%E5%9B%BE%EF%BC%9F%E6%96%B0%E5%8A%9F%E8%83%BD%E5%8F%AF%E4%BB%A5%E6%88%90%E6%89%B9%E8%A7%A3%E5%86%B3/ai.png " class="full-image" alt="AI" title="AI多开简直是累得半死">
-<p>后来，用起了AI内建多个画板。这个方法在处理单页面的时候，还是非常好用的，在同一个AI文件内建立多个画板，就能直接修改文字。<br>不过天要下雨，女儿要嫁人－－老板要改样式！一旦老板想要调整个什么，就要修改n＊画板个数次，简直爽得不要不要的，于是便要寻求更加Dry的方式。</p>
-<h3 id="-1"><a href="#-1" class="headerlink" title=""></a><blockquote class="blockquote-center"><p>自从sketch更新了3.7之后，整个人都清爽了 </p>
-</blockquote></h3><p>这次最大的变化就是增强了原有的Symbol功能，以前的symbol功能最多只能称之为够用，尽管文字可以单独脱离出Symbol进行编辑，但是图片之类的没有办法处理，而且一段一段文字地去修改和在AI里面做并没有太大区别。但是这一次更新，直接就把Symbol当成了一个Class，而每个Symbol的实体就是一个Instance，可以在Symbol里面定义每一个图片的位置、大小，文字的字体、字号、对齐方式等等，简直是不要太好用。</p>
-<h4 id="-2"><a href="#-2" class="headerlink" title=""></a><blockquote class="blockquote-center"><p>创建一个Symbol </p>
-</blockquote></h4><p>要创建一个Symbol，你需要将需要的图层编组，之后右键该组，选择Create Symbol</p>
-<img src="/2016/05/06/sketch-想要快速做一大堆的图？新功能可以成批解决/create.png" alt="创建只需要一键" title="创建只需要一键">
-<h4 id="-3"><a href="#-3" class="headerlink" title=""></a><blockquote class="blockquote-center"><p>一个Symbol Instance 和他能修改的东西 </p>
-</blockquote></h4><p>得到一个Instance后，😄，点击他，就可以在右边轻松地修改所有的字段和图片！<br><img src="/2016/05/06/sketch-想要快速做一大堆的图？新功能可以成批解决/symbol.png" alt="一个帅气的Symbol Instance" title="一个帅气的Symbol Instance"></p>
-<p>修改字段的名称就是父本的内容！除了文字之外，你没有看错，图片也能够修改！<br><img src="/2016/05/06/sketch-想要快速做一大堆的图？新功能可以成批解决/override.png" alt="修改后，enter或者点击画板部分生效" title="修改后，enter或者点击画板部分生效"></p>
-<h4 id="-4"><a href="#-4" class="headerlink" title=""></a><blockquote class="blockquote-center"><p>生出一窝可爱的娃娃 </p>
-</blockquote></h4><p>通过复制和 <strong>CMD+D</strong> 操作，我们可以很快地获得多个实例，而对单体实例的内容进行修改不会影响其他实例。<br><img src="/2016/05/06/sketch-想要快速做一大堆的图？新功能可以成批解决/instances.png" alt="可爱的娃娃" title="可爱的娃娃"></p>
-<h4 id="-5"><a href="#-5" class="headerlink" title=""></a><blockquote class="blockquote-center"><p>重新编辑孩子他爹 </p>
-</blockquote></h4><p>即使是已经生成了实例，仍然可以对父类进行编辑，只要双击即可进入编辑父类界面，就能对父类的样式进行编辑，左上角有返回按钮。<br><img src="/2016/05/06/sketch-想要快速做一大堆的图？新功能可以成批解决/instance.png" alt="双进进入修改这个Instance老爹界面" title="双进进入修改这个Instance老爹界面"></p>
-<h4 id="-6"><a href="#-6" class="headerlink" title=""></a><blockquote class="blockquote-center"><p>实际使用的细节和技巧 </p>
-</blockquote></h4><h5 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h5><p>实例会跟随父类图片的大小、比例、描边、阴影等样式，所以在重写实例图片的时候，<strong>注意和父类的图片比例匹配</strong>，可以搭配图好快等图片批处理的应用，来达到快速生娃娃的效果。</p>
-<h5 id="文字"><a href="#文字" class="headerlink" title="文字"></a>文字</h5><p>文字会跟随父类的基本上所有的文本以及段落属性，更具可玩性的是：文本会按照父类的对齐方式（alignment）进行对齐。<br>也就是说，如果父类采用的是中心对齐，那么实例的文字有增减的时候，会自动往中间增减。<br><br>然后我们对两个实例进行测试，可以观察左边图片部分的小标题的对齐情况！<br></p>
-<h5 id="填充内容"><a href="#填充内容" class="headerlink" title="填充内容"></a>填充内容</h5><p>即便父类里面文字是单行的，填充框也是只有一行，但是 Sketch 重写的时候是能够正确支持换行的，不过在单行的输入框内不能够直接编辑而已，所以我们能够先在别的编辑器里面编辑好带换行的文字，再粘贴到输入框即可完成多行文本的编辑。<br></p>
-<h3 id="-7"><a href="#-7" class="headerlink" title=""></a><blockquote class="blockquote-center"><p>生产力提高！产出更方便！ </p>
-</blockquote></h3><p>有了这些娃娃之后，就可以把全部画板一次性导出！到处的时候可以选择格式、DPI或尺寸，即便是印刷稿，也可以导出PDF来应付，简直不要太棒了！<br>基本上做一套模版，剩下的就可以扔给<strong>完！全！不！会！设！计！的！人！弄！了！</strong>而且后期导出也是自己操作，发现bug也能自己修改（比如文字溢出等等），能够用于各种各样的批量制作流程。即使是老板需要调整样式，如果改动不大也可以快速地修改完成，真是完爆AI。</p>
+          工作中有很多图片都是一个模版，套上不同内容、图片来生成不一样的快速生成一个系列的海报、传单、线上图片等。通常做一个大型一点的活动，需要改十几到几十张这一类的图片，整个人都崩溃了有木有。
+以前蠢蠢的方法们 
+刚开始，用ai来处理一批物料的时候，这个人带着电脑可怜的内存以及一卡一卡的鼠标，直接就崩溃了。多个AI还会导致占用空间超级多，有试过100多m的AI弄了30多个，整个电脑都不好了。
+ 
+后来，用
+          ...
 
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/06/sketch-想要快速做一大堆的图？新功能可以成批解决/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -712,6 +744,15 @@
 
           
           
+             <span id="/2016/05/06/开始刷leetcode（1）-- Add-Two-Numbers/" class="leancloud_visitors" data-flag-title="开始刷leetcode（1）-- Add Two Numbers">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
 
         </div>
       </header>
@@ -726,24 +767,16 @@
       
         
           
-            <blockquote><p>原题目地址 <a href="[https://leetcode.com/problems/add-two-numbers/]" title="[add-two-numbers]">LeetCode/add-two-numbers</a></p>
-</blockquote>
-<h2 id="Question"><a href="#Question" class="headerlink" title="Question"></a>Question</h2><p>You are given two linked lists representing two non-negative numbers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.</p>
-<p><strong>Input</strong>: (2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)<br><strong>Output</strong>: 7 -&gt; 0 -&gt; 8</p>
-<h2 id="First-Attempt"><a href="#First-Attempt" class="headerlink" title="First Attempt"></a>First Attempt</h2><p>At first I was confused by the meaning of this question… And then go to browse those discussion, cheating obviously.. We can simply  turning the listnodes to ints then adding up and turning it back , but makes a lot of unnecessary trouble.<br>Directly adding those two Listnodes by using a recursion works better. And then I make something like this:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Definition for singly-linked list.</span><br><span class="line"> * function ListNode(val) &#123;</span><br><span class="line"> *     this.val = val;</span><br><span class="line"> *     this.next = null;</span><br><span class="line"> * &#125;</span><br><span class="line"> */</span></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * @param &#123;ListNode&#125; l1</span><br><span class="line"> * @param &#123;ListNode&#125; l2</span><br><span class="line"> * @return &#123;ListNode&#125;</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">var</span> addTwoNumbers = <span class="function"><span class="keyword">function</span>(<span class="params">l1, l2</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> addListNodes(l1, l2, <span class="number">0</span>)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addListNodes</span>(<span class="params">l1, l2, base</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> sum = l1.val + l2.val + base;</span><br><span class="line">    <span class="keyword">var</span> reBase = sum &gt; <span class="number">9</span> ? <span class="number">1</span> : <span class="number">0</span>;</span><br><span class="line">    sum %= <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">var</span> result = ListNode(sum);</span><br><span class="line">    <span class="keyword">if</span>( l1.next || l2.next || base == <span class="number">1</span>)&#123;</span><br><span class="line">        result.next = addListNodes(l1.next||ListNode(<span class="number">0</span>), l2.next||ListNode(<span class="number">0</span>), base);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="TypeError"><a href="#TypeError" class="headerlink" title="TypeError ?"></a>TypeError ?</h2><p>It throwed a TypeError: Cannot set property ‘next’ of undefined.<br>Soon I realized ListNode does NOT have a return value so I rewrite this function to </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ListNode</span>(<span class="params">val</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.val = val;</span><br><span class="line">    <span class="keyword">this</span>.next = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure> 
-<p>But I still thought It’s not a good idea to rewrite this function.<br>So I just use %new% to generate a listnode<br>Got something like this:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Definition for singly-linked list.</span><br><span class="line"> * function ListNode(val) &#123;</span><br><span class="line"> *     this.val = val;</span><br><span class="line"> *     this.next = null;</span><br><span class="line"> * &#125;</span><br><span class="line"> */</span></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * @param &#123;ListNode&#125; l1</span><br><span class="line"> * @param &#123;ListNode&#125; l2</span><br><span class="line"> * @return &#123;ListNode&#125;</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">var</span> addTwoNumbers = <span class="function"><span class="keyword">function</span>(<span class="params">l1, l2</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> addListNodes(l1, l2, <span class="number">0</span>)</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addListNodes</span>(<span class="params">l1, l2, base</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> sum = l1.val + l2.val + base;</span><br><span class="line">    <span class="keyword">var</span> reBase = sum &gt; <span class="number">9</span> ? <span class="number">1</span> : <span class="number">0</span>;</span><br><span class="line">    sum %= <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">var</span> result = <span class="keyword">new</span> ListNode(sum);</span><br><span class="line">    <span class="keyword">if</span>( l1.next || l2.next || base == <span class="number">1</span>)&#123;</span><br><span class="line">        result.next = addListNodes(l1.next||<span class="keyword">new</span> ListNode(<span class="number">0</span>), l2.next||<span class="keyword">new</span> ListNode(<span class="number">0</span>), base);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Answer-is-wrong"><a href="#Answer-is-wrong" class="headerlink" title="Answer is wrong?"></a>Answer is wrong?</h2><p>But by the time I summited it, It failed. </p>
-<p><strong>Input</strong>: [2,4,3],[5,6,4]<br><strong>output</strong>: [7,0,7]</p>
-<p>The result has no carry. Silly mistake .. For better readability I change base to reBase trying to not making changes to params (Airbnb’s js style rule), but then forget to change the references. fix it:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addListNodes</span>(<span class="params">l1, l2, base</span>) </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    if( l1.next || l2.next || reBase == <span class="number">1</span>)&#123;</span><br><span class="line">        result.next = addListNodes(l1.next||<span class="keyword">new</span> ListNode(<span class="number">0</span>), l2.next||<span class="keyword">new</span> ListNode(<span class="number">0</span>), reBase);</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>GREAT!!! First successful submit to LeetCode !</p>
-<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>If you want to have a listnode, you will only need the first element, with the next property you can access to all the other listnode one by one. BTW, the <strong>input</strong> is quite confusing. I misthought it was an array and made a function like toListNode at the first time…… and then deleted it.</p>
+          原题目地址 LeetCode/add-two-numbers
 
-          
+QuestionYou are given two linked lists representing two non-negative numbers. The digits are stored in reverse order and each of their nodes contain a single digit. Add
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/06/开始刷leetcode（1）-- Add-Two-Numbers/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -823,6 +856,15 @@
 
           
           
+             <span id="/2016/04/26/搭了一个Github-Pages/" class="leancloud_visitors" data-flag-title="搭了一个Github Pages">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
 
         </div>
       </header>
@@ -837,11 +879,15 @@
       
         
           
-            <h2 id="简直不能再累了"><a href="#简直不能再累了" class="headerlink" title="简直不能再累了"></a>简直不能再累了</h2><p>一直捣鼓到凌晨4点，然后脑子里想着为什么TM不去建一个微信公众号或者是SegamentFault来写呢😂！！后来想想人活一场，不geek一点怎么可以，绝壁要搭个霸气的啊！于是就折腾了好几个主题，看了好多文档，搭了这么个东西出来</p>
-<h2 id="下一步干嘛呢"><a href="#下一步干嘛呢" class="headerlink" title="下一步干嘛呢"></a>下一步干嘛呢</h2><p>等什么时候写的东西多了，牛掰了之后，再把依赖leancloud的阅读记录啊、狼厂统计啊、评论啊、打赏啊搭起来哈哈。最近就先把手头上的项目和U厂的东西继续做着，顺便学一下markdown语法、熟悉一下编辑的时候完全不能知道出来的结果是个什么样子的悲惨情况习惯一下－－慢着，我应该去找个markdown的编辑器哈哈哈哈。另外我好害怕到时候换电脑了，我这一堆的md文件和配置没了岂不是很大剂！改天要想一下备份之类的了。Hexo也有好多东西有的玩，貌似还有人配合sublime snippet来写👆的title什么的部分，都是会玩的人啊。</p>
-<h3 id="睡觉囖"><a href="#睡觉囖" class="headerlink" title="睡觉囖"></a>睡觉囖</h3><p>有空就来更新一下 产品、设计、开发、运营 的各种心得啦啦啦～</p>
+          简直不能再累了一直捣鼓到凌晨4点，然后脑子里想着为什么TM不去建一个微信公众号或者是SegamentFault来写呢😂！！后来想想人活一场，不geek一点怎么可以，绝壁要搭个霸气的啊！于是就折腾了好几个主题，看了好多文档，搭了这么个东西出来
+下一步干嘛呢等什么时候写的东西多了，牛掰了之后，再把依赖leancloud的阅读记录啊、狼厂统计啊、评论啊、打赏啊搭起来哈哈。最近就先把手头上的项目和U厂的
+          ...
 
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/26/搭了一个Github-Pages/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -1070,6 +1116,99 @@
   
 
   
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Vwl2E6KTluany1EK1iXwM7x4-gzGzoHsz", "jkeaqlpsHnofI4k2TyVJHg8K");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
 
   
 
