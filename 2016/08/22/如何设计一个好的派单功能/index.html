@@ -1,0 +1,756 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="产品,算法," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="平常我们使用的滴滴打车、Uber背后的派单功能看似简单，但是其实后面有着无数复杂的机理，它对出行服务的重要性也毋庸置疑。甚至可以这么说，打车行业的一半的根基是建立在派单之上的。Uber在国外的崛起背后最大的功臣之一便是其精妙的派单功能和算法，而滴滴在中国的快速发展也得益于它不断发展的派单功能。
+那么今天我们来讲个真(xu)实(gou)的故事。滴滴优步估值加起来突破了1000亿美金，天使投资人许大平">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何设计一个好的派单功能">
+<meta property="og:url" content="http://xandstorm.github.io/2016/08/22/如何设计一个好的派单功能/index.html">
+<meta property="og:site_name" content="XandStorm的博客">
+<meta property="og:description" content="平常我们使用的滴滴打车、Uber背后的派单功能看似简单，但是其实后面有着无数复杂的机理，它对出行服务的重要性也毋庸置疑。甚至可以这么说，打车行业的一半的根基是建立在派单之上的。Uber在国外的崛起背后最大的功臣之一便是其精妙的派单功能和算法，而滴滴在中国的快速发展也得益于它不断发展的派单功能。
+那么今天我们来讲个真(xu)实(gou)的故事。滴滴优步估值加起来突破了1000亿美金，天使投资人许大平">
+<meta property="og:image" content="http://xandstorm.github.io/2016/08/22/如何设计一个好的派单功能/1.0.jpg">
+<meta property="og:image" content="http://xandstorm.github.io/2016/08/22/如何设计一个好的派单功能/1.2a.jpg">
+<meta property="og:image" content="http://xandstorm.github.io/2016/08/22/如何设计一个好的派单功能/1.2b.jpg">
+<meta property="og:image" content="http://xandstorm.github.io/2016/08/22/如何设计一个好的派单功能/2.1.jpg">
+<meta property="og:image" content="http://xandstorm.github.io/2016/08/22/如何设计一个好的派单功能/2.2.jpg">
+<meta property="og:image" content="http://xandstorm.github.io/2016/08/22/如何设计一个好的派单功能/3.0.jpg">
+<meta property="og:image" content="http://xandstorm.github.io/2016/08/22/如何设计一个好的派单功能/4.0.jpg">
+<meta property="og:image" content="http://xandstorm.github.io/2016/08/22/如何设计一个好的派单功能/5.0.jpg">
+<meta property="og:updated_time" content="2016-08-22T23:29:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何设计一个好的派单功能">
+<meta name="twitter:description" content="平常我们使用的滴滴打车、Uber背后的派单功能看似简单，但是其实后面有着无数复杂的机理，它对出行服务的重要性也毋庸置疑。甚至可以这么说，打车行业的一半的根基是建立在派单之上的。Uber在国外的崛起背后最大的功臣之一便是其精妙的派单功能和算法，而滴滴在中国的快速发展也得益于它不断发展的派单功能。
+那么今天我们来讲个真(xu)实(gou)的故事。滴滴优步估值加起来突破了1000亿美金，天使投资人许大平">
+<meta name="twitter:image" content="http://xandstorm.github.io/2016/08/22/如何设计一个好的派单功能/1.0.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 如何设计一个好的派单功能 | XandStorm的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-82812624-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">XandStorm的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">Keep learning.</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                如何设计一个好的派单功能
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-22T20:12:30+08:00" content="2016-08-22">
+              2016-08-22
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/08/22/如何设计一个好的派单功能/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/08/22/如何设计一个好的派单功能/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/08/22/如何设计一个好的派单功能/" class="leancloud_visitors" data-flag-title="如何设计一个好的派单功能">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>平常我们使用的滴滴打车、Uber背后的派单功能看似简单，但是其实后面有着无数复杂的机理，它对出行服务的重要性也毋庸置疑。甚至可以这么说，打车行业的一半的根基是建立在派单之上的。Uber在国外的崛起背后最大的功臣之一便是其精妙的派单功能和算法，而滴滴在中国的快速发展也得益于它不断发展的派单功能。</p>
+<p>那么今天我们来讲个真(xu)实(gou)的故事。<br>滴滴优步估值加起来突破了1000亿美金，天使投资人许大平觉得这个行业很有赚头，于是投资了00后CEO半藏的创业公司Biubiu打车，决定从这个万亿级的市场里分一杯羹。BiuBiu打车的唯一一个（还没毕业的）产品经理源氏挑上了派单功能的大梁。</p>
+ <a id="more"></a>
+<h2 id="Ver-1-0-实现基础派单功能"><a href="#Ver-1-0-实现基础派单功能" class="headerlink" title="Ver 1.0 实现基础派单功能"></a>Ver 1.0 实现基础派单功能</h2><p>源氏心想，派单多简单，我只要确定 <strong>派单范围</strong>、<strong>车辆及乘客位置</strong> ，在乘客请求时，搜寻离他最近的司机就好了！于是刷刷刷地写了第一版功能，乘客和司机分开客户端，司机端心跳上报自己的位置，当乘客端叫车的时候，服务器搜索根据乘客起点的坐标，找到半径3km内的 <strong>状态为可用</strong> 的司机，进行距离 <strong>排序</strong> ，对最近的司机分发订单。<br>想更深点还能把城市分割成大大小小的方块，司机上报的位置会得到落入方块的编号中，这样只要知道乘客的方块编号，就可以只搜寻乘客方块相邻的方块内的司机进行距离计算，能够显著减少工作量。举个例子：</p>
+<img src="/2016/08/22/如何设计一个好的派单功能/1.0.jpg" alt="搜寻附近最近司机" title="搜寻附近最近司机">
+<p>第二天，半藏看着源氏做出来的东西，勃然大怒！“愚蠢的欧豆豆啊，你这连个车型都没有怎么做运营！”。</p>
+<h2 id="Ver-1-1-加了车型功能"><a href="#Ver-1-1-加了车型功能" class="headerlink" title="Ver 1.1 加了车型功能"></a>Ver 1.1 加了车型功能</h2><p>只是增加了车型功能，能在乘客端选择车型，呼叫不同类型的车。司机端的账号可以设置为有权力接一个或多个车型。</p>
+<p>第二天，半藏把源氏做出来的东西上了线，司机炸锅：“卧槽怎么我不能拒绝订单！”。（愚蠢的欧豆豆被敲了一下脑袋，继续干活）</p>
+<h2 id="Ver-1-2a-增加串行的司机确认流程"><a href="#Ver-1-2a-增加串行的司机确认流程" class="headerlink" title="Ver 1.2a 增加串行的司机确认流程"></a>Ver 1.2a 增加串行的司机确认流程</h2><p>源氏心想，增加司机确认环节也可以有2种方法，串行的方法是：乘客发出订单后，对 <strong>按距离排序</strong> 后的司机从顶到底逐个询问是否接单，被询问的司机客户端显示乘客的坐标和目的地等信息，15s时间确认。但这样有可能司机在15s后状态就不可用了，所以最好是询问完一个司机后重新排序一次，取最优解。如果2分钟内都没有司机接受订单，则告知乘客叫车失败。举个例子就是：</p>
+<img src="/2016/08/22/如何设计一个好的派单功能/1.2a.jpg" alt="对Rank后的司机进行轮询" title="对Rank后的司机进行轮询">
+<h2 id="Ver-1-2b-增加并行的司机确认流程"><a href="#Ver-1-2b-增加并行的司机确认流程" class="headerlink" title="Ver 1.2b 增加并行的司机确认流程"></a>Ver 1.2b 增加并行的司机确认流程</h2><p>并行的方法则是：乘客发出订单后，对周围所有的司机同时进行告知，司机在60s内应答，应答后的司机再经由乘客（或系统帮忙）挑选，乘客挑选后再次确认司机可用性（因为司机可能会被乘客B挑走），如果司机可用性正常则完成派单，司机不可用重新回到乘客挑选环节。这个方法对算法和技术的要求最低，不用对司机进行Ranking。举个例子：</p>
+<img src="/2016/08/22/如何设计一个好的派单功能/1.2b.jpg" alt="无脑告知所有司机后3次握手" title="无脑告知所有司机后3次握手">
+<p>写完这个方案的源氏心里一惊，这不是某电视打车厂商的派单方案吗！我真是机智！半藏一看觉得好，就上这个了。<br>但是上线没几天，乘客挤爆了客服投诉热线，司机也一直反应派单极其不科学，源氏又被拉出来顶锅，思前想后提出了第二版。</p>
+<h2 id="Ver-2-0-利用路线规划计算距离"><a href="#Ver-2-0-利用路线规划计算距离" class="headerlink" title="Ver 2.0 利用路线规划计算距离"></a>Ver 2.0 利用路线规划计算距离</h2><p>原来用户们反应，很多时候司机被定位在了马路对面，每次掉头都非常浪费时间。源氏决定司机乘客的距离计算不再使用直线距离，而是对乘客和范围内的所有司机一一进行路径规划，用路径规划的距离进行排序，这个距离在下文统称为 <strong>实际距离</strong> 。这个方法很好地解决了上述的问题，调整后下图的 司机1 和 司机2 的排序的结果就和之前相反了，排序更为科学了。</p>
+<img src="/2016/08/22/如何设计一个好的派单功能/2.1.jpg" alt="路径规划确定距离" title="路径规划确定距离">
+<h2 id="Ver-2-1-计算距离的时候综合考虑整个行程"><a href="#Ver-2-1-计算距离的时候综合考虑整个行程" class="headerlink" title="Ver 2.1 计算距离的时候综合考虑整个行程"></a>Ver 2.1 计算距离的时候综合考虑整个行程</h2><p>用户行程在司机接到乘客的时候并没有结束，司机还需要把乘客送至目的地才算完成一个行程。有时候实际距离最近的司机并不一定是生活中的最优解，因为不是有些时候一些区域是不允许穿行的。举个例子就是源氏就读的“哪个门进就需要哪个出的”某211大学：</p>
+<img src="/2016/08/22/如何设计一个好的派单功能/2.2.jpg" alt="司机2虽然更近但是总行程更远了" title="司机2虽然更近但是总行程更远了">
+<p>因为有这些封闭的区域，加上城市间可能发生的大大小小的道路管制，计算距离的时候进行2次路径规划，能够得到更优解。</p>
+<p>这个版本上线后，乘客司机们都很欢喜，投诉率也降到了1%一下，一切都是这么祥和。然而一周后的周会上，运营Dva说上周刷单比例已经超过了90%，这个数字气得半藏大喊“油卡挖卡嘚肯乃衣”，可怜的欧豆豆又被扔去背锅。</p>
+<h2 id="Ver-3-0-排序算法升级"><a href="#Ver-3-0-排序算法升级" class="headerlink" title="Ver 3.0 排序算法升级"></a>Ver 3.0 排序算法升级</h2><p>源氏仔细研究了刷单司机的规律之后，做了3个改进比较好地控制了刷单率。</p>
+<ul>
+<li>和乘客距离低于一定范围的司机不会接受到订单</li>
+<li>曾经接载过该乘客的司机会大幅降低排序权重</li>
+<li>新手司机和新手乘客不会被匹配到一起</li>
+</ul>
+<p>同时源氏认识到了：派单功能就是为乘客提供当前时间点乃至将来的一小段时间内最便捷的司机。除了为乘客服务，派单功能还应该为司机服务，为整个城市的出行服务，为调控司机资源服务。所以源氏又为派单功能增加了几个考量点。</p>
+<h2 id="Ver-3-1-派单增加宏观调控功能"><a href="#Ver-3-1-派单增加宏观调控功能" class="headerlink" title="Ver 3.1 派单增加宏观调控功能"></a>Ver 3.1 派单增加宏观调控功能</h2><ol>
+<li>平衡每个司机接到的好单和坏单，用浮动分来平衡司机接到的单（比如滴滴此前的滴米机制）</li>
+<li>对司机排序的时候考虑司机距离上一单的待命时间，平衡司机接单的数量。</li>
+<li>派单更多考虑将非溢价区域的司机引导到溢价区域，缓解溢价（如下图）</li>
+<li><strong>增加第25单的等待时间，减少奖励支出</strong>（划掉）</li>
+</ol>
+<img src="/2016/08/22/如何设计一个好的派单功能/3.0.jpg" alt="司机3并非A的最优解但却是整体更优解" title="司机3并非A的最优解但却是整体更优解">
+<p>现在的派单算法已经能够满足乘客们的正常需要，还能满足协调司机资源配置的需求，简直棒呆了有没有！但是竞品出了很多新的功能，尤其是拼车功能，能在司机供应水平不变的情况下活生生地提高运载力，还能够缓和政府关系、树立环保的企业形象，怎么可以没有，源氏又被派去啃锅了。</p>
+<h2 id="Ver-4-0-拼车功能上线"><a href="#Ver-4-0-拼车功能上线" class="headerlink" title="Ver 4.0 拼车功能上线"></a>Ver 4.0 拼车功能上线</h2><p>拼车的实际实现会非常的复杂，因为需要考虑非常多的因素。不过其中的核心概念，还是比较容易理解的。我们先假设，司机已经接载到乘客A上车，送达A去目的地的路径为 Route蓝。此时如果B也在发起拼车请求，就对接载B－到达目的地A－到达目的地B进行路径规划得到 Route黄。我们就可以计算 Route蓝 和 Route黄 中A的行程距离增加是否超过阈值。如果在阈值内，再去判断B若和A拼车，到达目的地的距离的增加是否超过阈值。如果双方拼车的路程增加是合理的，那么就拼车成功。</p>
+<img src="/2016/08/22/如何设计一个好的派单功能/4.0.jpg" alt="对双方拼车前后距离变化判断" title="对双方拼车前后距离变化判断">
+<p>当然实际过程中的拼车会更为复杂，因为还要考虑到A、B谁先下车、具体的交通状况、A、B的行程长短等等。假设A的行程特别长，那么他是不是可以在途中进行连环拼车（自己上车－拼到B－B下车－拼到C－C下车－自己下车）。</p>
+<h2 id="Ver-4-1-设置司机目的地／回家"><a href="#Ver-4-1-设置司机目的地／回家" class="headerlink" title="Ver 4.1 设置司机目的地／回家"></a>Ver 4.1 设置司机目的地／回家</h2><p>当拼车功能顺利上线之后，这个小功能也很顺理成章抵触来了。设置目的地的本质其实就是司机制定了一个隐藏的拼车目的地，之后接载的乘客都需用拼车的算法来判断是否接受。</p>
+<p>有了这些功能之后，BiuBiu打车终于跻身国内一线打车软件，并且在继续高歌猛进，推出了5.0。</p>
+<h2 id="Ver-5-0-更大幅地提升司机配置效率"><a href="#Ver-5-0-更大幅地提升司机配置效率" class="headerlink" title="Ver 5.0 更大幅地提升司机配置效率"></a>Ver 5.0 更大幅地提升司机配置效率</h2><p>这个版本主要有3部分的功能：</p>
+<ol>
+<li><p>推出3人拼车功能，更进一步压榨先用的运载能力（同时也开启了三拼＋连环拼的用户噩梦时代😱）</p>
+</li>
+<li><p>为了缓解短时间内的需求高峰，送给乘客愿等优惠券，只要乘客愿意等候10分钟再用车，就能减3-5元。<br>能吸引一部分非紧急用车且对价格敏感的用户推迟用车，减少一段时间内的需求压力，提供时间窗口让溢价区域外的司机补充进来</p>
+</li>
+<li><p>在司机即将结束上一单行程的时候，可以接受下一个乘客的订单。<br>对司机而言，提早接到下一个订单能够提供“单多到爆”的快感，提升司机粘性。同时解决了派单时希望派单结果是“将来一小段时间”内最优解的问题。举个例子，司机2正在行程中，还有1分钟结束，但他在结束行程后（黑点处）离乘客很近，只需1分钟就能到达。而司机3虽然空闲，但是到达乘客需要4分钟，那么司机2才是将来1分钟后，乘客A的最优解。</p>
+<img src="/2016/08/22/如何设计一个好的派单功能/5.0.jpg" alt="即将结束行程的司机可能是未来的更优解" title="即将结束行程的司机可能是未来的更优解">
+</li>
+</ol>
+<p>推出了这些功能后，Biubiu打车已经奠定了国内 Top2 打车软件的地位，并且提出了更为创新的6.0版。</p>
+<h2 id="Ver-6-0-提供更丰富的派单建议"><a href="#Ver-6-0-提供更丰富的派单建议" class="headerlink" title="Ver 6.0 提供更丰富的派单建议"></a>Ver 6.0 提供更丰富的派单建议</h2><p>源氏先找到了做大数据分析的猎空，让猎空找出了20条叫车用户数最多的路线。再从中筛选出10条公共交通比较匮乏的路线，开始在上面运营大巴。当乘客符合这10条线路的时候，便推荐乘客使用大巴，价格仅为打车的1/3。大巴还能按照此前的行程数量调整不同时间点的发车频次，资源配置效率极高。</p>
+<p>尽管大巴的质优价廉还有座位吸引了一大批用户，但是利润相对较低，还对现有的快车业务造成了冲击。研究发现每增加3人次大巴行程的时候，就会减少1人次的快车／拼车行程。于是源氏减少了20%的大巴发车辆，大巴瞬间就和公交一样需要站位了，快车行程流失的量又回来了，源氏这波让半藏打了个82分。</p>
+<p><strong>随后Biubiu打车就让市政府制定规则收编了，成了IBM智慧城市的一部分</strong>（误）</p>
+<p>Biubiu打车的故事到此结束了，上面提到的功能点大多都是已经在现有的打车软件中实现的了。至于功能点的实现部分，也只是我最简单的猜想，实际实现肯定比这个复杂的多。文章内容的来源还需要感谢各个软件的更新日志、知乎上对于滴米的讨论、滴滴算法的工程师的日志博客、Medium里面关于Uber算法的文章、网上对各家功能和算法的分析研究、和司机平时聊天听到的吐槽等等<br>6.0版是还没有出现的功能，完全是我瞎猜的，如果滴滴优步以后这样做了，一定要别忘了给我发红包。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/产品/" rel="tag">#产品</a>
+          
+            <a href="/tags/算法/" rel="tag">#算法</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/18/增加了新功能/" rel="next" title="增加了新功能">
+                <i class="fa fa-chevron-left"></i> 增加了新功能
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <div class="ds-share flat" data-thread-key="2016/08/22/如何设计一个好的派单功能/"
+     data-title="如何设计一个好的派单功能"
+     data-content=""
+     data-url="http://xandstorm.github.io/2016/08/22/如何设计一个好的派单功能/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
+
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/08/22/如何设计一个好的派单功能/"
+           data-title="如何设计一个好的派单功能" data-url="http://xandstorm.github.io/2016/08/22/如何设计一个好的派单功能/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="XandStorm" />
+          <p class="site-author-name" itemprop="name">XandStorm</p>
+          <p class="site-description motion-element" itemprop="description">产品|设计|技术</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://www.github.com/xandstorms" target="_blank">
+                  
+                    <i class="fa fa-github"></i>
+                  
+                  Github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/Xandstorm" target="_blank">
+                  
+                    <i class="fa fa-dot-circle-o"></i>
+                  
+                  Zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        <div class="links-of-blogroll motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ver-1-0-实现基础派单功能"><span class="nav-number">1.</span> <span class="nav-text">Ver 1.0 实现基础派单功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ver-1-1-加了车型功能"><span class="nav-number">2.</span> <span class="nav-text">Ver 1.1 加了车型功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ver-1-2a-增加串行的司机确认流程"><span class="nav-number">3.</span> <span class="nav-text">Ver 1.2a 增加串行的司机确认流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ver-1-2b-增加并行的司机确认流程"><span class="nav-number">4.</span> <span class="nav-text">Ver 1.2b 增加并行的司机确认流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ver-2-0-利用路线规划计算距离"><span class="nav-number">5.</span> <span class="nav-text">Ver 2.0 利用路线规划计算距离</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ver-2-1-计算距离的时候综合考虑整个行程"><span class="nav-number">6.</span> <span class="nav-text">Ver 2.1 计算距离的时候综合考虑整个行程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ver-3-0-排序算法升级"><span class="nav-number">7.</span> <span class="nav-text">Ver 3.0 排序算法升级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ver-3-1-派单增加宏观调控功能"><span class="nav-number">8.</span> <span class="nav-text">Ver 3.1 派单增加宏观调控功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ver-4-0-拼车功能上线"><span class="nav-number">9.</span> <span class="nav-text">Ver 4.0 拼车功能上线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ver-4-1-设置司机目的地／回家"><span class="nav-number">10.</span> <span class="nav-text">Ver 4.1 设置司机目的地／回家</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ver-5-0-更大幅地提升司机配置效率"><span class="nav-number">11.</span> <span class="nav-text">Ver 5.0 更大幅地提升司机配置效率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ver-6-0-提供更丰富的派单建议"><span class="nav-number">12.</span> <span class="nav-text">Ver 6.0 提供更丰富的派单建议</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">XandStorm</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=0.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xandstorm"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("Vwl2E6KTluany1EK1iXwM7x4-gzGzoHsz", "jkeaqlpsHnofI4k2TyVJHg8K");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>

@@ -66,7 +66,7 @@ Fiber 能解决 React 渲染大块内容时候的卡顿React Fiber 是 Rea">
 <meta property="og:description" content="最近知乎上大家在讨论 React Fiber（如何理解React Fiber架构），刚好最近有在看React的实现方式的文章，这里可以讨论一下 React Fiber 究竟比 React 进化了什么，以及它的实现思路和未来，本文大量参考了 React 团队的文档、Github Issues、PR时候的讨论等。
 Fiber 能解决 React 渲染大块内容时候的卡顿React Fiber 是 Rea">
 <meta property="og:image" content="http://xandstorm.github.io/2016/08/12/React的进化？深入理解React%20Fiber（一）/Core.jpg">
-<meta property="og:updated_time" content="2016-08-19T06:27:21.000Z">
+<meta property="og:updated_time" content="2016-08-22T21:45:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="React的进化？深入理解React Fiber（一）">
 <meta name="twitter:description" content="最近知乎上大家在讨论 React Fiber（如何理解React Fiber架构），刚好最近有在看React的实现方式的文章，这里可以讨论一下 React Fiber 究竟比 React 进化了什么，以及它的实现思路和未来，本文大量参考了 React 团队的文档、Github Issues、PR时候的讨论等。
@@ -275,7 +275,7 @@ Fiber 能解决 React 渲染大块内容时候的卡顿React Fiber 是 Rea">
       
         <p>最近知乎上大家在讨论 React Fiber（<a href="https://www.zhihu.com/question/49496872" target="_blank" rel="external">如何理解React Fiber架构</a>），刚好最近有在看React的实现方式的文章，这里可以讨论一下 React Fiber 究竟比 React 进化了什么，以及它的实现思路和未来，本文大量参考了 React 团队的文档、Github Issues、PR时候的讨论等。</p>
 <h3 id="Fiber-能解决-React-渲染大块内容时候的卡顿"><a href="#Fiber-能解决-React-渲染大块内容时候的卡顿" class="headerlink" title="Fiber 能解决 React 渲染大块内容时候的卡顿"></a>Fiber 能解决 React 渲染大块内容时候的卡顿</h3><p><a href="https://github.com/acdlite/react-fiber-architecture" target="_blank" rel="external">React Fiber</a> 是 React 团队正在着手重写的 React 核心算法（Core algorithm），重写后的核心 Feature 是增量渲染（Incremental rendering），能够优先渲染重要内容，次要部分随后再增量更新。Fiber 通过把需要很长时间渲染的内容分解成小块，分散到每一帧的间隔去处理，提升 React 对需要快速反映的动画、用户操作的响应速度。</p>
- <a id="more"></a> 
+ <a id="more"></a>
 <h3 id="React-的核心机制"><a href="#React-的核心机制" class="headerlink" title="React 的核心机制"></a>React 的核心机制</h3><p>要想了解 Fiber 是什么，首先我们得了解 React 是怎么运作的。React 的核心概念是 <strong>虚拟 DOM</strong>，它会在组件挂载的时候，在内存里维持一个虚拟的组件树，然后将组建树渲染成 DOM 节点。每当有更新过来的时候（更新一般来自于调用setState方法，或者是父组件传递下的props变更），React 能够对比前后两个树结构的不同，得出更新所需要的操作，再由 ReactDOM 翻译成 DOM 操作，能够高效率地更改页面的元素。这些过程里最核心的，就是 <a href="https://facebook.github.io/react/docs/reconciliation.html" target="_blank" rel="external"><strong>Reconciliation</strong></a> 算法，它能够 Diff 两棵组件树，并且决定哪些部分需要在这次更新中被调整。Reconciliation 的意思是校正／校准，它的功能可谓是虚拟 DOM 的灵魂，由 Reconciliation 算法计算出来的组件树差异，能被翻译成 DOM 操作、也可以是在 Native 里面的界面元素操作。</p>
 <img src="/2016/08/12/React的进化？深入理解React%20Fiber（一）/Core.jpg" alt="核心机理" title="核心机理">
 <p>更多的关于 Reconciliation 算法的细节，可以去看一下官方文档，看看 React 是如何巧妙地把一个O(n^3)的问题通过一些小小的性能牺牲，转化为了一个O(n)的问题。还有这一篇知乎专栏（<a href="https://zhuanlan.zhihu.com/p/20346379" target="_blank" rel="external">不可思议的 react diff</a>）也挺不错。</p>
@@ -420,7 +420,7 @@ Fiber 能解决 React 渲染大块内容时候的卡顿React Fiber 是 Rea">
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -430,7 +430,7 @@ Fiber 能解决 React 渲染大块内容时候的卡顿React Fiber 是 Rea">
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
