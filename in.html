@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>recaptcha demo</title>
+    <script type="text/javascript">
+          function cb(g){
+            console.log(g,"test");
+            document.querySelector('.info').innerHTML= g;
+          }
+    </script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    </script>
+  </head>
+
+  <body>
+    <div class="recap">
+        <button
+          class="g-recaptcha"
+          data-sitekey="6LdwkiAUAAAAABpZfvfhM9iSn5M4pCwTgKa6LVCL"
+          data-callback="cb">
+          Submit
+        </button>
+      <div class="info">
+
+      </div>
+    </div>
+
+  </body>
+</html>
