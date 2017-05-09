@@ -2,16 +2,19 @@
 <html>
   <head>
     <title>recaptcha demo</title>
+    <script type="text/javascript">
+          function cb(g){
+            console.log(g,"test");
+            document.querySelector('.info').innerHTML= g;
+          }
+    </script>
     <script src='https://www.google.com/recaptcha/api.js'>
     </script>
   </head>
 
   <body>
     <div class="recap">
-      <div class="g-recaptcha" data-callback="function cb(g){
-        console.log(g,"test");
-        document.querySelector('.info').innerHTML= g;
-      }" data-sitekey="6LfY6xcUAAAAAK9r5MhtWXedCtdeprZ1t45Tfes5"></div>
+      <div class="g-recaptcha" data-callback="cb" data-sitekey="6LfY6xcUAAAAAK9r5MhtWXedCtdeprZ1t45Tfes5"></div>
       <div class="info">
 
       </div>
