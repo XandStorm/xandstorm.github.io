@@ -3,7 +3,11 @@
   <head>
     <title>recaptcha demo</title>
     <script type="text/javascript">
+          
           var start = Date.now();
+          function st(){
+            start = Date.now();
+          }
           function cb(g){
             console.log(g,"test");
             document.querySelector('.info').innerHTML= (Date.now() - start)/1000 +'s';
