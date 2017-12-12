@@ -5,7 +5,7 @@
     <script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/clipboard@1/dist/clipboard.min.js'></script>
     <script type="text/javascript">
-        (function cb(g){
+        windows.onload = function cb(g){
             var copy = new Clipboard('.copy');
 
             copy.on('success', function(e) {
@@ -33,7 +33,7 @@
                 console.error('Action:', e.action);
                 console.error('Trigger:', e.trigger);
             });
-          })()
+          }
     </script>
   </head>
 
