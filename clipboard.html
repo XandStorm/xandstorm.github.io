@@ -5,51 +5,14 @@
     <script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/clipboard@1/dist/clipboard.min.js'></script>
     <script type="text/javascript">
-        windows.onload = function cb(g){
-            var copy = new Clipboard('.copy');
 
-            copy.on('success', function(e) {
-                console.info('Action:', e.action);
-                console.info('Text:', e.text);
-                console.info('Trigger:', e.trigger);
-                e.clearSelection();
-            });
-
-            copy.on('error', function(e) {
-                console.error('Action:', e.action);
-                console.error('Trigger:', e.trigger);
-            });
-
-            var cut = new Clipboard('.cut');
-
-            cut.on('success', function(e) {
-                console.info('Action:', e.action);
-                console.info('Text:', e.text);
-                console.info('Trigger:', e.trigger);
-                e.clearSelection();
-            });
-
-            cut.on('error', function(e) {
-                console.error('Action:', e.action);
-                console.error('Trigger:', e.trigger);
-            });
-          }
     </script>
   </head>
 
   <body>
 
-       <!-- Target -->
-      <input id="foo" value="This is a test!!">
-      <br/>
-      <!-- Trigger -->
-      <button class="copy" data-clipboard-target="#foo">
-          Copy to clipboard
-      </button>
-      <br/>
-      <button class="cut" data-clipboard-action="cut" data-clipboard-target="#foo">
-          Cut to clipboard
-      </button>
+
+  <a href="sms:10086?body=cxye">给 10086 发送内容为"cxye"的短信</a>
 
   </body>
 </html>
