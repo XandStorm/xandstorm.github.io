@@ -7,9 +7,9 @@
           
         function callback(res){ 
             console.log(res)
-            //res（未通过验证）= {ret:0,ticket:null}
-            //res（验证成功） = {ret:1,ticket:"String"}
-            if(res.ret == 1){
+            //res（未通过验证）= {ret:1,ticket:null}
+            //res（验证成功） = {ret:0,ticket:"String"}
+            if(res.ret == 0){
                 alert('res.ticket')   // 票据
                 alert('res.randstr')  // 检验随机串
             }
