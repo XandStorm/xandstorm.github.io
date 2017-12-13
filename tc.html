@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>recaptcha demo</title>
+    <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+    <script type="text/javascript">
+          
+        function callback(res){ 
+            //res（未通过验证）= {ret:0,ticket:null}
+            //res（验证成功） = {ret:1,ticket:"String"}
+            if(res.ret == 1){
+                alert('res.ticket')   // 票据
+                alert('res.randstr')  // 检验随机串
+            }
+        }
+    </script>
+    </script>
+  </head>
+
+  <body>
+  
+   <button id="TencentCaptcha"
+      data-appid="2000100094"    //(必须) AppID
+      data-cbfn="callback"            //(必须) 回调函数名
+   ></button>
+
+  </body>
+</html>
