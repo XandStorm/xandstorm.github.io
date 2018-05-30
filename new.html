@@ -7,13 +7,13 @@
       grecaptcha.ready(function() {
             grecaptcha.execute('6LdtSlwUAAAAAPLTgbnB-IAXEEm87eCImojIVelC', {action: 'loaded'}).then(function(token) {
 //                console.log(token);
-               fetch("http://119.28.2.86:80/?res="+token).then(res=>res.json()).then(res=>alert("本次行为： "+res.action+"，获得得分："+res.score));
+               fetch("http://119.28.2.86:80/?res="+token).then(res=>res.json()).then(res=>console.log("本次行为： "+res.action+"，获得得分："+res.score));
             });
         });
       var test = function() {
             grecaptcha.execute('6LdtSlwUAAAAAPLTgbnB-IAXEEm87eCImojIVelC', {action: 'click'}).then(function(token) {
 //                console.log(token);
-               fetch("http://119.28.2.86:80/?res="+token).then(res=>res.json()).then(res=>alert("本次行为： "+res.action+"，获得得分："+res.score));
+               fetch("http://119.28.2.86:80/?res="+token).then(res=>res.json()).then(res=>console.log("本次行为： "+res.action+"，获得得分："+res.score));
             });
         };
     </script>
