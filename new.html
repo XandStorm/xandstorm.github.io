@@ -7,6 +7,10 @@
       grecaptcha.ready(function() {
             grecaptcha.execute('6LdtSlwUAAAAAPLTgbnB-IAXEEm87eCImojIVelC', {action: 'loaded'}).then(function(token) {
                console.log(token);
+               fetch("https://www.google.com/recaptcha/api/siteverify",{
+                  method: 'POST',
+                  body: new URLSearchParams([["secret", "6LdtSlwUAAAAAB2EXrMh_NrVd8Qv4OMZkRtfzgZj"],["response", token]]).toString()
+                }).then(data=>data.json()).then(data=>console.log(data));
             });
         });
     </script>
