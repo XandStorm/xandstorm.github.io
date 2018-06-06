@@ -7,20 +7,20 @@
       grecaptcha.ready(function() {
             grecaptcha.execute('6LdtSlwUAAAAAPLTgbnB-IAXEEm87eCImojIVelC', {action: 'loaded'}).then(function(token) {
 //                console.log(token);
-               fetch("http://119.28.2.86:80/?res="+token).then(res=>res.json()).then(res=>console.log("本次行为： "+res.action+"，获得得分："+res.score));
+               fetch("http://119.28.2.86:80/?res="+token).then(res=>res.json()).then(res=>document.querySelector('#score').innerHTML="本次行为： "+res.action+"，获得得分："+res.score);
             });
         });
       var test = function() {
             grecaptcha.execute('6LdtSlwUAAAAAPLTgbnB-IAXEEm87eCImojIVelC', {action: 'click'}).then(function(token) {
 //                console.log(token);
-               fetch("http://119.28.2.86:80/?res="+token).then(res=>res.json()).then(res=>console.log("本次行为： "+res.action+"，获得得分："+res.score));
+               fetch("http://119.28.2.86:80/?res="+token).then(res=>res.json()).then(res=>document.querySelector('#score2').innerHTML="本次行为： "+res.action+"，获得得分："+res.score);
             });
         };
         var action = function(act) {
       grecaptcha.ready(function() {
         grecaptcha.execute('6LdtSlwUAAAAAPLTgbnB-IAXEEm87eCImojIVelC', {action: act}).then(function(token) {
 //                console.log(token);
-               fetch("http://119.28.2.86:80/?res="+token).then(res=>res.json()).then(res=>console.log("本次行为： "+res.action+"，获得得分："+res.score));
+               fetch("http://119.28.2.86:80/?res="+token).then(res=>res.json()).then(res=>document.querySelector('#score2').innerHTML="本次行为： "+res.action+"，获得得分："+res.score);
             });
         });
         };
@@ -28,7 +28,7 @@
   </head>
 
   <body>
-
+    <div id="score" style="width:100%;height:80px;color:#ffffff;font-size:20px;line-height:80px;background-color:#2266FF;margin:16px 0 48px;">……</div>
     <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article" style="opacity: 1; display: block; transform: translateY(0px);">
 
     
@@ -42,7 +42,7 @@
               
                 
                 <a class="post-title-link" href="/2016/09/24/Mac 的 Force Touch/" itemprop="url">
-                  Mac 的 Force Touch
+                  以下内容可以忽略，拖动到最下方可测试点击按钮
                 </a>
               
             
@@ -668,5 +668,6 @@
     <div class="recap">
       <button style="width:80%;margin-left:10%;color:#FFFFFF;height:40px;background-color:#0000FF;display:block;" onclick="test()">test</button>   
     </div>
+    <div id="score2" style="width:100%;height:80px;color:#ffffff;font-size:20px;line-height:80px;background-color:#2266FF;margin:16px 0 48px;">……</div>
   </body>
 </html>
